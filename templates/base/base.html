@@ -128,8 +128,7 @@ $('.header-cart').click(function(){
           success: function (data) {
       
             $('#shopping-cart .shopping-cart-list').html(data.html_ShopCart);
-          
-            
+            $('.shopping-cart-btns').html(data.ShopCart_Status)
           }
       })})
   var SaveForm = function () {

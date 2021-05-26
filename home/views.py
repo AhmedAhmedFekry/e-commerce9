@@ -255,6 +255,17 @@ def addtoshopcartajax(request):
 def shoplist(request):
     data = dict()
     basket = Cart(request)
+    if basket:
+        print('the cart is not empty')
+        data["ShopCart_Status"] = render_to_string(
+        "ajax_pages/cart-full.html", {}, request=request
+    )
+   
+    else:
+        print('the cart is empty')
+        data["ShopCart_Status"] = render_to_string(
+        "ajax_pages/cart-empty.html", {}, request=request
+    )
     print("shoplist functions done")
 
     context = {"cart": basket, "request": request}
