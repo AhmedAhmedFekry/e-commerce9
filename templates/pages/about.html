@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+{{setting.title}}
+{% endblock title %}
+{% block keywords %}
+{{setting.keywords}}
+{% endblock keywords %}
+{% block description %}
+{{setting.description}}
+{% endblock description %}
+{% block imageIcon %}
+<link rel="shortcut icon" type="image/jepg" href="{% static 'img/golden_pound_icon.jpg' %}" sizes="20x20" />
+{% endblock imageIcon %}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+
+<div id="breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/">{% trans "Home" %}</a></li>
+            <li class="active">{% trans "About Us" %}</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+<!-- section -->
+<div class="section">
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            {{ setting.aboutus|safe }}
+        </div>
+        <!-- /row -->
+    </div>
+</div>
+<!-- /section -->
+
+{% endblock content %}

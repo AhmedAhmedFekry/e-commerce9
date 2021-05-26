@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=
+  , initial-scale=1.0"> 
+  <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <!-- Google font -->
+ <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+  <!-- Custom stlylesheet -->
+  <link type="text/css" rel="stylesheet" href="{% static 'css/style.css'%}" />
+ <title>Document</title>
+ <!-- <style>
+    @import url('https://fonts.googleapis.com/css2?family=Markazi+Text&display=swap');
+    </style> -->
+    <style>
+        @font-face {font-family: MyRightToLeftFont; src: url('https://fonts.googleapis.com/css2?family=Markazi+Text&display=swap')}
+    
+        p { font-family: MyRightToLeftFont!important; }
+    </style>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Markazi+Text&display=swap" rel="stylesheet">
+</head>
+
+<body >
+    <pdf:language name="arabic"/>
+    <!-- Content for Static Frame 'header_frame' -->
+    <div id="header_content">
+        <h1> Bill # {{id}} </h1>
+    </div>
+
+    <!-- Content for Static Frame 'footer_frame' -->
+
+    <hr>
+    <!-- HTML Content -->
+    <table>
+        <tr>
+            <td >Name: {{ order.first_name}} {{ order.last_name }} </td>
+            <td> Phone : {{ order.phone}}</td>
+        </tr>
+        <tr>
+            <td> Address: {{ order.address}}</td>
+            <td> Admin Notes:{{ order.adminnote}}</td>
+        </tr>
+
+    </table>
+
+    <hr>
+
+
+
+   
+
+    <table class="table table-bordered">
+        <thead class="text-left">
+            <tr>
+                <th scope="col" style="text-align: left;" style="font-family:Helvetica!important"> الاسم</th>
+                <th scope="col" style="text-align: left;">quantity</th>
+                <th scope="col" style="text-align: left;">price </th>
+                <th scope="col" style="text-align: left;"> Total </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rs in orderitems %}
+            <tr>
+
+                <td><p>{{ rs.product.title}} {{ rs.variant.size }} {{ rs.variant.color }}</p></td>
+                <td>{{ rs.quantity}}</td>
+                <td>{{ rs.price}}</td>
+                <td> {{ rs.amount}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th colspan="3">Total</th>
+                <th>{{total}}</th>
+            </tr>
+        </tbody>
+    </table>
+   
+
+  </body>
+</html>
+
+
+
+  

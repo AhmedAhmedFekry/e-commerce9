@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block head %}
+<script>
+    $(function () {
+        $("#accordion").accordion();
+    });
+</script>
+
+{% endblock head %}
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container" style="padding:6px; margin: 0px 6px;">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"> {% trans "Home" %}</a></li>
+            <li class="active">  {% trans "Frequently Asked Questions" %} </li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <div id="accordion">
+                {% for rs in faq %}
+                <h3>{{ rs.question }}</h3>
+                <div>
+                    <p>
+                        {{ rs.answer | safe }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+
+{% endblock content %}

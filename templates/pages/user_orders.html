@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load currency %}
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container" style="padding:6px; margin: 0px 6px;">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"> {% trans "Home" %}</a></li>
+            <li class="active"> {% trans "User Profile" %}</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+
+
+<!-- section -->
+<div class="section userprofile">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <div class="col-md-3">
+                {% include "includes/user_panel.html" %}
+            </div>
+
+            <div class="col-md-9">
+                <div class="order-summary clearfix">
+                    <div class="section-title">
+                        <h3 class="title"> {% trans "Order List" %}</h3>
+                    </div>
+                    <table class="shopping-cart-table table">
+                        <tr>
+                            <th class="text-left"> {% trans "Id" %} </th>
+                            <th class="text-left"> {% trans "First Name" %} </th>
+                            <th class="text-left"> {% trans "Last Name" %} </th>
+                            <th class="text-left"> {% trans "Total" %} </th>
+                            <th class="text-left"> {% trans "Status" %} </th>
+                            <th class="text-left"> {% trans "Date" %} </th>
+                            <th class="text-left"> {% trans "Detail" %} </th>
+                        </tr>
+                        {% for rs in orders %}
+                        <tr>
+                            <td class="text-left">{{ rs.id}} </td>
+                            <td class="text-left">{{ rs.first_name}} </td>
+                            <td class="text-left">{{ rs.last_name}} </td>
+                            <td class="text-left">{{ rs.total}} </td>
+                            <td class="text-left">{{ rs.status}} </td>
+                            <td class="text-left">{{ rs.create_at}} </td>
+                            <td class="text-left"><a class="primary-btn" href="{% url 'order_detail' rs.id %}">
+                                    {% trans "Detail" %}
+                                </a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+
+{% endblock content %}

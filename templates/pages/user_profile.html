@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container" style="padding:6px; margin: 0px 6px;">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"> {% trans "Home" %}</a></li>
+            <li class="active"> {% trans "User Profile" %}</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+
+
+<!-- section -->
+<div class="section userprofile">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <div class="col-md-3">
+                {% include "includes/user_panel.html" %}
+            </div>
+
+            <div class="col-md-9">
+                <div class="billing-details">
+                    <div class="section-title">
+                        <h3 class="title"> {% trans "User Profile Inf." %}</h3>
+                    </div>
+                </div>
+                <table class="shopping-cart-table table">
+                    <tr>
+                        <th class="text-left">
+                            <a href="/user/update" class="primary-btn"> {% trans "Update Profile" %}</a>
+                            <a href="{% url 'password_change' %}" class="primary-btn"> {% trans "Change Password" %}</a>
+                        </th>
+                        <td> <img src="{{ profile.image.url }}" style="border-radius: 45px; height: 200px "></td>
+                    </tr>
+                    <tr>
+                        <th class="text-left"> {% trans "Name Surname" %}</th>
+                        <td class="text-left">{{ user.first_name}} {{ user.last_name}} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-left"> {% trans "Email" %}</th>
+                        <td class="text-left">{{ profile.user.email}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-left"> {% trans "Phone" %}</th>
+                        <td class="text-left">{{ profile.phone}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-left"> {% trans "Addres" %}</th>
+                        <td class="text-left">{{ profile.address}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-left"> {% trans "City" %}</th>
+                        <td class="text-left">{{ profile.city}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-left"> {% trans "Country" %}</th>
+                        <td class="text-left">{{ profile.country}}</td>
+                    </tr>
+
+                </table>
+            </div>
+
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+
+{% endblock content %}

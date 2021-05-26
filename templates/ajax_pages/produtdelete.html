@@ -1,0 +1,53 @@
+{% load i18n %}
+{% for rs in book %}
+<Form action="" method="post" data-url="/order/deletefromcartajax/{{rs.id}}/1" class="delete-form">
+    {% csrf_token %}
+    <input type="hidden" name="prosuctidtest" value="5" id="prosuctidtest">
+    <input type="hidden" name="deleteorupdate" value="delete"
+    <div class="modal-header">
+        <h5 class="modal-title">Delete Book</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <p class="lead">  {% trans "Are you sure you want to delete this product" %}<strong>{{rs.product}} </strong></p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"> {% trans "Close" %}</button>
+        <button type="submit" class="btn btn-danger bdd"> {% trans "Delete book" %}</button>
+    </div>
+</Form>{% endfor %}
+<script>
+    var DeleteForm = function () {
+        var form = $(this);
+        var d = $('#prosuctidtest').val();
+        console.log('ssss');
+        $.ajax({
+            url: form.attr('data-url'),
+            data: { 'd': d },
+
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+
+                if (data.form_is_valid) {
+
+
+                    $('#book-table').html(data.list);
+                    $('.header-cart a .qty').text(data.count);
+                    $('.header-cart  .totalspan').html(data.tot)
+                    $('#modal-book').modal('hide');
+                } else {
+                    console.log(' else complter')
+                    $('#modal-book .modal-content').html(data.html_form)
+
+                }
+            }
+        })
+        return false;
+    }
+    $('#modal-book').on("submit", ".delete-form", DeleteForm)
+       //update
+</script>

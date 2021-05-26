@@ -1,0 +1,297 @@
+{% load static %}
+{% load i18n %}
+{% load currency %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <title>{% block title %} My Home Page {% endblock title %}</title>
+  <meta name="keywords" content="{% block keywords %} Home Keywords {% endblock keywords %}">
+  <meta name="description" content="{% block description %} Home description  {% endblock description %}">
+   {% block imageIcon %}
+   <link
+rel="shortcut icon"
+type="image/jepg"
+href="{% static 'img/golden_pound_icon.jpg' %}"
+sizes="20x20"
+/>
+   {% endblock imageIcon %}
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <!-- Slick -->
+  <link type="text/css" rel="stylesheet" href="{% static 'css/slick.css'%}" />
+  <link type="text/css" rel="stylesheet" href="{% static 'css/slick-theme.css'%}" />
+
+  <!-- nouislider -->
+  <link type="text/css" rel="stylesheet" href="{% static 'css/nouislider.min.css'%}" />
+
+  <!-- Font Awesome Icon -->
+  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css'%}">
+
+  <!-- Custom stlylesheet -->
+  <link type="text/css" rel="stylesheet" href="{% static 'css/style.css'%}" />
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  
+  <!-- jQuery !-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+  <!-- jQuery UI !-->
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  {% get_current_language as LANGUAGE_COE %}
+
+  {% if LANGUAGE_COE == 'ar' %}
+
+  <link type="text/css" rel="stylesheet" href="{% static 'css/style-rtl.css'%}" />
+  {% endif %}
+
+
+  {% block head %}
+
+
+  {% endblock head %}
+</head>
+
+<body>
+  {% block header %}
+  {% include 'includes/header.html' %}
+
+  {% endblock header %}
+
+{% block content %}
+  
+{% endblock content %}
+{% include 'includes/footer.html' %}
+
+<script>
+
+
+  /// add to cart from home page  session 
+  $(document).on('click', '#add-button', function (e) {
+    e.preventDefault();
+    console.log('add to cart from home page  session ')
+    $.ajax({
+        type: 'POST',
+        url: '{% url "basket_add" %}',
+        data: {
+            productid: $(this).val(),
+            productqty:'1',
+            csrfmiddlewaretoken: "{{csrf_token}}",
+            action: 'post'
+        },
+        success: function (json) {
+           //document.getElementById("basket-qty").innerHTML = json.qty
+           $('.header-cart  .totalspan').html(json.tot);
+        
+           $('.header-cart a .qty').text(json.qty);
+        },
+        error: function (xhr, errmsg, err) {}
+    });
+})
+
+
+var proQty = $('.pro-qty');
+proQty.prepend('<span class="dec qtybtn"><i class="fa fa-minus" aria-hidden="true"></i></span>');
+proQty.append('<span class="inc qtybtn"><i class="fa fa-plus" aria-hidden="true"></i></span>');
+proQty.on('click', '.qtybtn', function () {
+    var $button = $(this);
+    var oldValue = $button.parent().find('input').val();
+    if ($button.hasClass('inc')) {
+        var newVal = parseFloat(oldValue) + 1;
+    } else {
+        // Don't allow decrementing below zero
+        if (oldValue > 1) {
+            var newVal = parseFloat(oldValue) - 1;
+        } else {
+            newVal = 1;
+        }
+    }
+    $button.parent().find('input').val(newVal);
+});
+ 
+$('.header-cart').click(function(){
+        console.log(' header from cart ')
+        $.ajax({
+
+          url:'/shoplist/',
+          dataType: 'json',
+          success: function (data) {
+      
+            $('#shopping-cart .shopping-cart-list').html(data.html_ShopCart);
+          
+            
+          }
+      })})
+  var SaveForm = function () {
+
+    var product_id = $(this).attr('data-id')
+    var form = $(this).closest("form");
+    console.log(product_id)
+    $.ajax({
+
+      url: form.attr("data-validate-username-url"),
+      data: form.serialize(),
+      dataType: 'json',
+      success: function (data) {
+        console.log('success');
+        console.log(data.count);
+        $('.header-cart a .qty').text(data.count);
+        $('.header-cart  .totalspan').html(data.tot)
+        $('#shopping-cart .shopping-cart-list').html(data.html_ShopCart);
+       
+        
+        console.log('successagin');
+
+      }
+
+    })
+    return false;
+  }
+
+  $(".add-to-cart",).on("click", SaveForm);
+     //$(".btndelete",).on("click", DeleteProduct);
+     var DeleteProduct = function () {
+      var btn = $(this);
+      $.ajax({
+        url: btn.attr("data-url"),
+
+        dataType: 'json',
+        beforeSend: function () {
+          console.log('berfor sending')
+          $('#modal-book').modal('show');
+        },
+        success: function (data) {
+          $('#modal-book .modal-content').html(data.html_form);
+          console.log('delete s done')
+        }
+      });
+    };
+
+    $('#book-table').on("click", ".btndelete", DeleteProduct);
+
+    
+    
+// update quantity from shopcart in page shop_product_p.html
+
+
+$(document).on('click', '.add-to-car',function(){
+
+  var product_id = $(this).attr('data-id')
+  var form = $(this).closest("form");
+  console.log(product_id)
+  $.ajax({
+    url: form.attr("data-url"),
+    data: form.serialize(),
+    type:'POST',
+    dataType: 'json',
+    success: function (data) {
+      console.log('success from ffffffffffffffdetail page');
+      console.log(data.count);
+      $('.header-cart a .qty').text(data.count);
+      $('.header-cart  .totalspan').html(data.tot)
+
+    }
+
+  })
+  return false;
+});
+var UpdateCart = function () {
+
+  
+  var form = $(this).closest("form");
+  var product_id = form.attr('data-id'); 
+  console.log(product_id)
+  $.ajax({
+    url: form.attr("data-url"),
+    data: form.serialize(),
+    type:'POST',
+    dataType: 'json',
+    success:  function (data) {
+ 
+          $('#book-table').html(data.list);
+          $('.header-cart  .totalspan').html(data.tot)
+      
+         
+     
+  }
+
+  })
+  return false;
+}
+
+
+// create 
+
+$(".shopping-cart-table",).on("submit",".update-form", UpdateCart);
+
+$("#slider-range").slider({
+  range: true,
+  min: 0,
+  max: $("#maxsalaryhidden").val(),
+  values: [0, $("#maxsalaryhidden").val()],
+  slide: function (event, ui) {
+  ;
+      $("#minsalarytxt").val(ui.values[0]) + $("#maxsalarytxt").val(ui.values[1]);
+  },
+  stop: function (event, ui) {
+      var mint = $('#minsalarytxt').val();
+      var maxt = $('#maxsalarytxt').val();
+
+      $.ajax({
+          url: '/ajaxs/prices',
+          isRTL:true,
+          type: 'POST',
+          data: {
+              'mint': mint,
+              'maxt': maxt,
+              csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+              action: 'post'
+          },
+          data_type: 'html',
+          success: function (data) {
+              console.log("success");
+              $('#appendproduct').html(data.rendered_table);
+              $('#pagination').html(data.rendered_pagination);
+          },
+          error: function (data) {
+              alert("Got an error dude " + data);
+          }
+
+      });
+  }
+});
+$(".ui-corner-all").click(function () {
+  console.log('clicked activate');
+  console.log($('#minsalarytxt').val() + ' =====' + $('#maxsalarytxt').val());
+  var mint = $('#minsalarytxt').val();
+  var maxt = $('#maxsalarytxt').val();
+  console.log(maxt);
+
+});
+
+</script>
+  {% block foot %} {% endblock foot%}
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static '' %}js/slick.min.js"></script>
+  <script src="{% static '' %}js/nouislider.min.js"></script>
+  <script src="{% static '' %}js/jquery.zoom.min.js"></script>
+
+  <script src="{% static '' %}js/jquery.ui.slider-rtl.js"></script>
+ 
+
+  <script src="{% static '' %}js/nouislider.min.js"></script>
+  
+  <script src="{% static '' %}js/main.js"></script>
+</body>
+
+</html>

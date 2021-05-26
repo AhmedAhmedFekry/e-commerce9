@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container" style="padding:6px; margin: 0px 6px;">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"> {% trans "Home" %}</a></li>
+            <li class="active">About Us</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <div class="col-md-3">
+             
+            </div>
+
+            <div class="col-md-9">
+                <div class="billing-details">
+                    <div class="section-title">
+                        <h3 class="title"> {% trans "User Profile Update" %}</h3>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        {{ user_form.as_p  }}
+                        {{ profile_form.as_p  }}
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="primary-btn" type="submit"> {% trans "Update" %}</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+{% endblock content %}

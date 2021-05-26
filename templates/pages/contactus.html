@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+{{setting.title}}
+{% endblock title %}
+{% block keywords %}
+{{setting.keywords}}
+{% endblock keywords %}
+{% block description %}
+{{setting.description}}
+{% endblock description %}
+{% block imageIcon %}
+<link rel="shortcut icon" type="image/jepg" href="{% static 'img/golden_pound_icon.jpg' %}" sizes="20x20" />
+{% endblock imageIcon %}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+
+<div id="breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/">{% trans "Home" %}</a></li>
+            <li class="active"> {% trans "Cantact Us" %}</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row" id="contactform">
+
+            <div class="col-md-5">
+
+                <div class="billing-details">
+
+                    <div class="section-title">
+                        <h3 class="title"> {% trans "Contact Form" %}</h3>
+
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{message.tags}}" role="alert">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+
+
+                    </div>
+                    <form id="checkout-form" class="clearfix" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" class="primary-btn" value='{% trans "SEND MESSAGE" %}'>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="col-md-7">
+                <div class="shiping-methods">
+                    <div class="section-title">
+                        <h3 class="title"> {% trans "Contact Information" %}</h3>
+                    </div>
+                    <div>
+                        {{ setting.contact|safe }}
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+{% endblock content %}

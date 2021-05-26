@@ -1,0 +1,201 @@
+{% load static %}
+{% load i18n %}
+{% load currency %}
+	<!-- HEADER -->
+	<header>
+		<!-- top Header -->
+		<div id="top-header">
+			<div class="container">
+				<div class="pull-left">
+					<span>{% trans "Welcome to E-shop!" %}</span>
+				</div>
+				<div class="pull-right">
+					<ul class="header-top-links">
+						<li><a href="#">{% trans "Store" %}</a></li>
+						<li><a href="#">{% trans "Newsletter" %}</a></li>
+						<li><a href="{% url 'faq' %}">{% trans "FAQ" %}</a></li>
+						<li class="dropdown default-dropdown">
+							<form action="{% url 'set_language' %}" method="post">
+								{% csrf_token %}
+								<input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}">
+								<select name="language" onchange="submit()">
+	
+									{% get_current_language as LANGUAGE_CODE %}
+									{% get_available_languages as LANGUAGESS %}
+									{% get_language_info_list for LANGUAGESS as languages %}
+									{% for language in languages %}
+									<option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}
+										selected{% endif %}>
+										{{ language.name_local }} ({{ language.code }})
+									</option>
+									{% endfor %}
+	
+								</select>
+								<noscript>
+									<input type="submit" value="Set" />
+								</noscript>
+							</form>
+						</li>
+						<li class="dropdown default-dropdown">
+							
+							<form id="currency_switcher" method="POST" action="{% url 'selectcurrency' %}">
+								{% csrf_token %}
+								<select name="currency" onchange="submit()">
+									{% for curr in CURRENCIES %}
+									<option value="{{ curr.code }}"
+										{% ifequal curr.code request.session.currency %}selected="selected"
+										{% endifequal %}>
+										{{ curr.symbol }} {{ curr.name }}
+									</option>
+									{% endfor %}
+								</select>
+	
+								<noscript>
+									<input type="submit" value="Set" />
+								</noscript>
+	
+							</form>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /top Header -->
+
+		<!-- header -->
+		<div id="header">
+			<div class="container">
+				<div class="pull-left">
+					<!-- Logo -->
+					<div class="header-logo">
+						<a class="logo" href="#">
+							<img src="{% static 'img/logo.png' %}" alt="">
+						</a>
+					</div>
+					<!-- /Logo -->
+					<script>
+						$(function() {
+							$("#query").autocomplete({
+								source: "{% url 'search_auto' %}",
+								select: function (event, ui) { //item selected
+									AutoCompleteSelectHandler(event, ui)
+								},
+								minLength: 2,
+							});
+						});
+						function AutoCompleteSelectHandler(event, ui)
+						{
+							var selectedObj = ui.item;
+						}
+					</script>
+
+				  <!-- Search -->
+				  <div class="header-search">
+                    <form action="{% url 'search' %}" method="post">
+                        {% csrf_token %}
+                        <input id="query" name="query" class="input search-input" type="text" placeholder="Enter your keyword">
+                        <select name="catid"  class="input search-categories">
+                            <option value="0">{% trans "All Categories" %}</option>
+
+                        </select>
+                        <button class="search-btn"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+                <!-- /Search -->
+				</div>
+				<div class="pull-right">
+					<ul class="header-btns">
+						<!-- Account -->
+						<li class="header-account dropdown default-dropdown">
+							{% if user.id is not None %}
+							<div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
+								<div class="header-btns-icon">
+									<img src="{{ request.session.userimage }}" style="height:29px; border-radius:10%">
+								</div>
+								<strong class="text-uppercase">{{ user.first_name }} <i
+										class="fa fa-caret-down"></i></strong>
+							</div>
+							{% else %}
+							<a href="{% url 'login' %}" class="text-uppercase">{% trans "Login" %}</a> / <a
+								href="{% url 'signup' %}" class="text-uppercase">{% trans "Sign Up" %}</a>
+							{% endif %}
+							<ul class="custom-menu">
+								<li><a href="#"><i class="fa fa-user-o"></i> {% trans "My Account" %}</a></li>
+								<li><a href="{% url 'my_orders' %}"><i class="fa fa-tasks"></i>
+									{% trans "My Orders" %}</a></li>
+								<li><a href="{% url 'like' %}"><i class="fa fa-heart-o"></i>
+										{% trans "My Favorits" %}</a></li>
+								<li><a href="{% url 'compare' %}"><i class="fa fa-exchange"></i>
+										{% trans "My comparison" %}</a></li>
+								<li><a href="{% url 'logout' %}"><i class="fa fa-unlock-alt"></i> {% trans "Log out" %}</a></li>
+								<li><a href="#"><i class="fa fa-user-plus"></i> {% trans "Create An Account" %}</a></li>
+							</ul>
+						</li>
+						<!-- /Account -->
+
+						<!-- Cart -->
+						<li class="header-cart dropdown default-dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="display: inline;">
+								<div class="header-btns-icon">
+									<i class="fa fa-shopping-cart"></i>
+									<span class="qty">{{countt|default:0}}</span>
+								</div>
+								<strong class="text-uppercase"> <span> <a href="{% url 'shopcart' %}"> {% trans "My Cart:" %}</a></span> </strong>
+								<br>
+								<span class="totalspan" style="padding: 0px;">{% include "includes/total.html" %} </span>
+							</a>
+							<div class="custom-menu">
+								<div id="shopping-cart">
+									<div class="shopping-cart-list">
+										{% get_current_language as LANf %}
+                                    {% for rs in shopcart %}
+                                    <div class="product product-widget">
+                                        <div class="product-thumb">
+                                            {% if rs.variant.image_id > 0 %}
+                                            <img src="{{rs.variant.image }}" alt="">
+                                            {% else %}
+                                            <img src="{{rs.product.image.url}}" alt="">
+                                            {% endif %}
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-price"> {% if rs.product.variant == 'None' %}
+                                                {{ rs.product.price|currency:request.session.currency }}
+                                                {{ request.session.currency }}
+                                                {% else %}
+                                                {{ rs.variant.price|currency:request.session.currency }}
+                                                {{ request.session.currency }}
+                                                {% endif %} <span class="qty">x2</span></h3>
+                                            <h2 class="product-name"> <a href="/{{LANf}}/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{rs.product}}
+                                                {{ rs.variant.size }} {{ rs.variant.color }}</a></h2>
+                                        </div>
+                                        <button class="cancel-btn"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                  
+                                    {% endfor %}
+                             
+									
+									</div>
+									<div class="shopping-cart-btns">
+										<button class="main-btn"> {% trans "View Cart" %}</button>
+										<button class="primary-btn"> {% trans "Checkout" %} <i class="fa fa-arrow-circle-right"></i></button>
+									</div>
+								</div>
+							</div>
+						</li>
+						<!-- /Cart -->
+
+						<!-- Mobile nav toggle-->
+						<li class="nav-toggle">
+							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
+						</li>
+						<!-- / Mobile nav toggle -->
+					</ul>
+				</div>
+			</div>
+			<!-- header -->
+		</div>
+		<!-- container -->
+	</header>
+	<!-- /HEADER -->
+
+

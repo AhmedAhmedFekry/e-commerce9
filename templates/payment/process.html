@@ -1,0 +1,9 @@
+{% extends "base/base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="containter text-center">
+	<h1> {% trans "Pay Using Paypal" %}</h1>
+	{{form.render}}
+</div>
+	
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+{{setting.title}}
+{% endblock title %}
+{% block keywords %}
+{{setting.keywords}}
+{% endblock keywords %}
+{% block description %}
+{{setting.description}}
+{% endblock description %}
+{% block imageIcon %}
+<link
+rel="shortcut icon"
+type="image/jepg"
+href="{% static 'img/golden_pound_icon.jpg' %}"
+sizes="20x20"
+/>
+{% endblock imageIcon %}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+{% include 'includes/slider.html' %}
+{% include "includes/content.html" %}
+{% endblock content %}

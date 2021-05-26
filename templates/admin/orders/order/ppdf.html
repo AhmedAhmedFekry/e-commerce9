@@ -1,0 +1,42 @@
+<html>
+ <head>
+   <title>Test</title>
+   <style>
+     h1 {
+       text-align: center;
+     }
+
+     table {
+       border: 1px solid;
+       margin: 0 auto;
+       width: 70%;
+     }
+
+     td, th {
+       text-align: center;
+       border: 1px solid;
+     }
+   </style>
+ </head>
+ <body>
+   <h1>List of people</h1>
+   <table>
+     <thead>
+       <tr>
+         <th>Last Name</th>
+         <th>First Name</th>
+         <th>Email</th>
+       </tr>
+     </thead>
+     <tbody>
+       {% for person in people %}
+         <tr>
+           <td>أحمد</td>
+           <td>أحمد </td>
+           <td>فري</td>
+         </tr>
+       {% endfor %}    
+     </tbody>
+   </table>
+ </body>
+</html>

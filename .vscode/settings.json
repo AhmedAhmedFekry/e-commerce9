@@ -1,0 +1,11 @@
+{
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "pylint_django"
+    ],
+    "python.linting.flake8Enabled": false,
+    "python.linting.enabled": true,
+    "python.jediEnabled": false,
+    "python.languageServer": "Microsoft",
+    "python.formatting.provider": "black"
+}

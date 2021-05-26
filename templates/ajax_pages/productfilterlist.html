@@ -1,0 +1,104 @@
+{% load static %}
+{% load i18n %}
+{% load currency %}
+<script>
+    $(document).ready(function () {
+// to add to cart from contont.html page
+
+      var SForm = function () {
+
+        var product_id = $(this).attr('data-id')
+        var form = $(this).closest("form");
+        console.log(product_id)
+        $.ajax({
+
+          url: form.attr("data-validate-username-url"),
+          data: form.serialize(),
+          dataType: 'json',
+          success: function (data) {
+            console.log('success');
+            console.log(data.count);
+            $('.header-cart a .qty').text(data.count);
+            $('.header-cart  .totalspan').html(data.tot);
+
+          }
+
+        })
+        return false;
+      }
+
+      $(".add-to-ca",).on("click", SForm);
+
+    })</script>
+
+    {% for product in products %}
+    <!-- Product Single -->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+   
+        <div class="product product-single">
+            <div class="product-thumb">
+                <a class="main-btn quick-view" href="{% url 'product_detail' product.id product.slug %}"><i class="fa fa-search-plus"></i> Quick view</a>
+                <img src="{{ product.image.url }}"  class="img-responsive" style="height: 150px;margin: 0 auto;" alt="">
+            </div>
+            <div class="product-body">
+                <h3 class="product-price">{{ product.price|currency:request.session.currency }}
+                    {{ request.session.currency }}</h3>
+                <div class="product-rating">
+                    <i style="color:#ffb656;"
+                                class="fa fa-star{% if product.avarege_review < 1%}-o empty{% endif%}"></i>
+                            <i style="color:#ffb656;"
+                                class="fa fa-star{% if product.avarege_review < 2%}-o empty{% endif%}"></i>
+                            <i style="color:#ffb656;"
+                                class="fa fa-star{% if product.avarege_review < 3%}-o empty{% endif%}"></i>
+                            <i style="color:#ffb656;"
+                                class="fa fa-star{% if product.avarege_review < 4%}-o empty{% endif%}"></i>
+                            <i style="color:#ffb656;"
+                                class="fa fa-star{% if product.avarege_review < 5%}-o empty{% endif%}"></i>
+                </div>
+                <h2 class="product-name"><a href="#">{{product.title|truncatechars:27}}</a></h2>
+                <div class="product-btns">
+                   
+                <form action="{% url 'addlike' %}" method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{product.id}}">
+                    {%if user not in product.like.all%}
+                    <button class="main-btn icon-btn" type="submit"><i class="fa fa-heart-o"></i></button>
+                    {%else%}
+                    <button class="main-btn icon-btn" type="submit"><i class="fa fa-heart"
+                            style="color:red;"></i></button>
+                    {%endif%}
+
+                </form>
+
+                <form action="{% url 'addcompare' %}" method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{product.id}}">
+                    {%if user not in product.compare.all%}
+                    <button class="main-btn icon-btn" type="submit"><i class="fa fa-exchange"></i></button>
+                    {%else%}
+                    <button class=" main-btn icon-btn" type="submit"><i class="fa fa-exchange"
+                            style="color:green;"></i></button>
+                    {%endif%}
+
+                </form>
+                {% if product.variant == 'None'%}
+                <input type="hidden" name="prosuctid" value="{{ product.id }}">
+                <button type="button" class=" primary-btn " id="add-button"  value="{{product.id}}" {% if product.amount < 1  %} disabled {% endif %} >
+                        {% if product.amount > 0  %}
+                        <i class="fa fa-shopping-cart"></i> {% trans "Add to Cart" %}{% else %}
+                        <i class="fa fa-shopping-cart"></i> {% trans "Out of Stock" %} {% endif %}
+                    </button>
+                     
+                {% else %}
+                <a href="{% url 'product_detail' product.id product.slug %}" class="primary-btn"><i
+                        class="fa fa-shopping-cart"></i> {% trans "Detail" %}</a>
+                {% endif %}
+         
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Product Single -->
+{% endfor %}
+        

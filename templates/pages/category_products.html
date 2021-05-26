@@ -1,0 +1,101 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load currency %}
+{% block title %}{{ catdata.title }} Products{% endblock %}
+{% block description %} {{ catdata.description }} {% endblock %}
+{%block head %}<style>
+    .ui-state-default,
+    .ui-widget-content .ui-state-default,
+    .ui-widget-header .ui-state-default {
+        border: 1px solid #111;
+        background-image: none;
+        background-color: #30323a;
+        font-weight: normal;
+        color: #644343;
+    }
+
+    .ui-widget-header {
+        border: 1px solid #aaaaaa;
+        background-image: none;
+        background-color: #F8694A;
+        font-weight: bold;
+    }
+</style>
+<script>  
+    $(function() {  
+       $( "#slider-3" ).slider({  
+          range:true,  
+         
+          min: 0,  
+          max: parseInt($("#maxsalaryhidden").val()), 
+          values: [0, parseInt($("#maxsalaryhidden").val())],  
+          slide: function( event, ui ) {  
+            $("#minsalarytxt").val(ui.values[0]) + $("#maxsalarytxt").val(ui.values[1]);
+             $( "#price" ).val(ui.values[ 0 ]+" EGP" + " - " + ui.values[ 1 ]+" EGP" );  
+          },
+          stop: function (event, ui) {
+            var mint = $('#minsalarytxt').val();
+            var maxt = $('#maxsalarytxt').val();
+      
+            $.ajax({
+                url: 'ajax/prices',
+                type: 'POST',
+                data: {
+                    'mint': mint,
+                    'maxt': maxt,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                data_type: 'html',
+                success: function (data) {
+                    console.log("success");
+                    $('#appendproduct').html(data.rendered_table);
+                    $('#pagination').html(data.rendered_pagination);
+                },
+                error: function (data) {
+                   console.log('you should select max and min true')
+                }
+      
+            });
+        }
+      });  
+    $( "#price" ).val( $( "#slider-3" ).slider( "values", 0 )+" EGP"  +  
+       " - " + $( "#slider-3" ).slider( "values", 1 )+" EGP"  );  
+       $(".ui-corner-all").click(function () {
+        console.log('clicked activate');
+        console.log($('#minsalarytxt').val() + ' =====' + $('#maxsalarytxt').val());
+        var mint = $('#minsalarytxt').val();
+        var maxt = $('#maxsalarytxt').val();
+        console.log(typeof(maxt))
+        console.log(typeof(parseInt(maxt)))
+      
+      });
+    });  
+ 
+   
+</script>
+    
+
+{% endblock%}
+
+{% block header %}
+{{ block.super }}
+{% include 'includes/nav.html' %}
+
+{% endblock header %}
+
+    
+{% block content %}
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/">{% trans "Home" %}</a></li>
+            <li class="active">{{ categ.title|capfirst }}</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+{% include 'includes/pt.html' %}
+{% endblock %}

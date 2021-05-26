@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+
+{% block title %} {{ setting.title }}{% endblock %}
+{% block description %} {{ setting.description }}{% endblock %}
+{% block keywords %}{{ setting.keywords }} {% endblock %}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+ {% include 'includes/like.html' %} 
+ {% endblock content %}

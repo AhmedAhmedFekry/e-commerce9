@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+{{setting.title}}
+{% endblock title %}
+{% block keywords %}
+{{setting.keywords}}
+{% endblock keywords %}
+{% block description %}
+{{setting.description}}
+{% endblock description %}
+
+
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<div class="container">
+    <!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container" style="padding:6px; margin: 0px 6px;">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"> {% trans "Home" %}</a></li>
+            <li class="active"> {% trans "Shop Cart" %}</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+<!-- section -->
+   <!-- container -->
+   <div class="container">
+    <!-- row -->
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="order-summary clearfix">
+                <div class="section-title">
+                    <h3 class="title">{% trans "Shopcart Product List" %}</h3>
+                </div>
+                <table class="shopping-cart-table table" id="book-table">
+
+                    {% include "includes/shop_product_p.html" %}
+
+
+
+
+                </table>
+                <div class="pull-right">
+                    <a href="{% url 'order_create' %}" class="primary-btn">{% trans "Place Order" %}</a>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- /row -->
+</div>
+<!-- /container -->
+<!-- /section -->
+</div>
+<div class="modal fade" id="modal-book">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+{% endblock content %}

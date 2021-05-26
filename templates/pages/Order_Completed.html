@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container" style="padding:6px; margin: 0px 6px;">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"> {% trans "Home" %} </a></li>
+            <li class="active"> Order Completed </li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+
+</div>
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="order-summary clearfix">
+                    <div class="section-title">
+                        <h3 class="title"> {% trans "Order Complated" %} </h3>
+                    </div>
+                    <hr>
+                    <h2> {% trans "Dear" %}  {{ order.first_name }} {{  order.last_name }}</h2>
+                    <hr>
+                    <p> {% trans "order has been successfully completed. Your order number is" %}<strong>{{ order.id }}</strong>. </p>
+                   
+                    <h3> {% trans "Thank You" %} </h3>
+                    <hr>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+{% endblock content %}

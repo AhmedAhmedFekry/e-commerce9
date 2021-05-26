@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load currency %}
+{% block title %}{{ catdata.title }} Products{% endblock %}
+{% block description %} {{ catdata.description }} {% endblock %}
+{%block head %}<style>
+    .ui-state-default,
+    .ui-widget-content .ui-state-default,
+    .ui-widget-header .ui-state-default {
+        border: 1px solid #111;
+        background-image: none;
+        background-color: #30323a;
+        font-weight: normal;
+        color: #644343;
+    }
+
+    .ui-widget-header {
+        border: 1px solid #aaaaaa;
+        background-image: none;
+        background-color: #F8694A;
+        font-weight: bold;
+    }
+</style>
+{% endblock head %}
+{% block header %}
+{{ block.super }}
+{% include 'includes/nav.html' %}
+
+{% endblock header %}
+{% block content %}
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/">{% trans "Home" %}</a></li>
+            <li class="active">{{ categ.title|capfirst }}</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+{% include 'includes/pt.html' %}
+{% endblock %}

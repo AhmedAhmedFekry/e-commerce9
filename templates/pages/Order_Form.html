@@ -1,0 +1,155 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load currency %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/">{% trans "Home" %}</a></li>
+            <li class="active">{% trans "Order Page" %}</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <Form action="" method="post">
+                {% csrf_token %}
+                <div class="col-md-6">
+                    <div class="billing-details">
+
+                        <div class="section-title">
+                            <h4 class="title">{% trans "Shipping Details" %}</h4>
+                        </div>
+                       {{form|crispy }}
+                        
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="shiping-methods">
+                        <div class="section-title">
+                            <h4 class="title">{% trans "Payment Information" %}</h4>
+                        </div>
+                        <p><label for="id_first_name">{% trans "Total:" %} {{ total }} USD </label>
+                            <input type="text" name="total" class="input" readonly
+                                value="${{ cart.get_total_price_after_discount|currency:request.session.currency }} {{ request.session.currency }}">
+                        </p>
+                        <p><label for="id_first_name">{% trans "Payment By" %}</label>
+                            <button style="    display: block;
+                            width: 100px;
+                            padding: 7px 9px;
+                            margin: 20px;" type="submit" name="cash" value="cash" class="primary-btn">{% trans "Cash" %}</button>
+                            <button style="    display: block;
+                            width: 100px;
+                            padding: 7px 9px;
+                            margin: 20px;" type="submit"  name="paypal" value="paypal"class="primary-btn">{% trans "paypal" %} </button>
+
+                    </div>
+                </div>
+
+            </Form>
+
+            <div class="col-md-12">
+                <div class="order-summary clearfix">
+                    <div class="section-title">
+                        <h3 class="title">{% trans "Shopcart Product List" %}</h3>
+                    </div>
+                    <table class="shopping-cart-table table">
+                        <thead>
+                            <tr>
+                        
+                                <th>{% trans "Product" %}</th>
+                                <th></th>
+                                <th class="text-center">{% trans "Price" %}</th>
+                                <th class="text-center">{% trans "Quantity" %}</th>
+                                <th class="text-center">{% trans "Total" %}</th>
+                                <th class="text-right"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="shopp">
+                           
+                            {% for rs in cart %}
+                            {% with product=rs.product %}
+                            <tr id="ppppp" data-index="{{product.id}}" class="product-item">
+                                <td class="thumb">
+                                    <a href="/product/{{ rs.product_id }}/{{ rs.product.slug }}">
+                                        {% if rs.variant.image_id > 0 %}
+                                        <img src="{{rs.variant.image }}" alt="" style="height: 50px;margin: 0px auto;" class="img-responsive">
+                                        {% else %}
+                                        <img src="{{rs.product.image.url}}" alt="" style="height: 50px;margin: 0px auto;" class="img-responsive">
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td class="details">
+                                    <a href="/{{LAN}}/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{product.title}}
+                                        {{ rs.variant.size|default_if_none:""  }} {{ rs.variant.color }}</a>
+                                </td>
+                                <td class="price text-center"><strong>
+                                        {% if rs.product.variant == 'None' %}
+                                        {{ rs.product.price|currency:request.session.currency }}
+                                        {{ request.session.currency }}
+                                        {% else %}
+                                        {{ rs.variant.price |currency:request.session.currency }}
+                                        {{ request.session.currency }}
+                                        {% endif %}
+                                    </strong></td>
+                                <td class="qty text-center dddd"> <strong>{{rs.quantity}}</strong>
+                                    </td>
+                                <td class="total text-center"><strong id="priceofporoduct{{product.id}}" class="primary-color">
+                                        {% if rs.product.variant == 'None' %}
+                                        {{rs.total_price|currency:request.session.currency }}
+                                        {{ request.session.currency }}
+                                        {% else %}
+                                        {{ rs.total_price|currency:request.session.currency }}
+                                        {{ request.session.currency }}
+                                        {% endif %}
+                                    </strong></td>
+                                
+                            </tr>
+                            {% endwith %}
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th class="empty" colspan="3"></th>
+                                <th>{% trans "SUBTOTAL" %}</th>
+                                <th colspan="2" id="subtotal" class="sub-total">{{ cart.get_total_price|currency:request.session.currency }}
+                                    {{ request.session.currency }}</th>
+                            </tr>
+                            <tr>
+                                <th class="empty" colspan="3"></th>
+                                <th>{% trans "SHIPING" %}</th>
+                                <td colspan="2">{% trans "Free Shipping" %}</td>
+                            </tr>
+                            <tr>
+                                <th class="empty" colspan="3"></th>
+                                <th>{% trans "TOTAL" %}</th>
+                                <th colspan="2" class="total"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+
+{% endblock content %}

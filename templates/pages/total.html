@@ -1,0 +1,84 @@
+{% load currency %}
+{% load i18n %}
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="order-summary clearfix">
+                <div class="section-title">
+                    <h3 class="title">{% trans "Shopcart Product List" %}</h3>
+                </div>
+                <table class="shopping-cart-table table table-striped" style="border: 2px solid #111;">
+                    <thead>
+                        <tr> 
+                            <th  style="border: 1px solid green;">{% trans "Product" %}</th>
+                          
+                            <th style="border: 1px solid green;" class="text-center">{% trans "Price" %}</th>
+                            <th style="border: 1px solid green;" class="text-center">{% trans "Quantity" %}</th>
+                            <th  style="border: 1px solid green;" class="text-center">{% trans "Total" %}</th>
+                         
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for rs in shopcart %}
+                        <tr>
+                            
+                            <td class="details" style="border: 1px solid red;">
+                                {{rs.product}}
+                                    {{ rs.variant.size }} {{ rs.variant.color }} </td>
+                            <td class="price text-center" style="border: 1px solid red;"><strong>
+                                    {% if rs.product.variant == 'None' %}
+                                    {{ rs.product.price|currency:request.session.currency }}
+                                    {{ request.session.currency }}
+                                    {% else %}
+                                    {{ rs.variant.price|currency:request.session.currency }}
+                                    {{ request.session.currency }}
+                                    {% endif %}
+                                </strong></td>
+                            <td class="qty text-center" style="border: 1px solid red;"><strong>{{rs.quantity}}</strong></td>
+                            <td class="total text-center" style="border: 1px solid red;"><strong class="primary-color">$
+                                    {% if rs.product.variant == 'None' %}
+                                    {{ rs.Total_Price|currency:request.session.currency }} {{ request.session.currency }}
+                                    {% else %}
+                                    {{ rs.Total_Pr|currency:request.session.currency }}
+                                    {{ request.session.currency }}
+                                    {% endif %}
+                                </strong></td>
+                         
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="empty" colspan="3"></th>
+                            <th>{% trans "SUBTOTAL" %}</th>
+                            <th colspan="2" class="sub-total">{{ total|currency:request.session.currency }}
+                                {{ request.session.currency }}</th>
+                        </tr>
+                        <tr>
+                            <th class="empty" colspan="3"></th>
+                            <th>{% trans "SHIPING" %}</th>
+                            <td colspan="2">{% trans "Free Shipping" %}</td>
+                        </tr>
+                        <tr>
+                            <th class="empty" colspan="3"></th>
+                            <th>{% trans "TOTAL" %}</th>
+                            <th colspan="2" class="total">{{ total|currency:request.session.currency }}
+                                {{ request.session.currency }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+
+        </div>
+
+
+</div>
+        
+    </div>

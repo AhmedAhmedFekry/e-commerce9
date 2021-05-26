@@ -1,0 +1,3 @@
+{% load currency %}
+{{ total_price|floatformat:1|currency:request.session.currency }}
+{{ request.session.currency }}

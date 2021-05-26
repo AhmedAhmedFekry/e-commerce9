@@ -1,0 +1,186 @@
+{% load i18n %}
+{% load currency %}
+{% load crispy_forms_tags %}
+
+{% get_current_language as LAN %}
+
+
+<thead>
+    <tr>
+
+        <th>{% trans "Product" %}</th>
+        <th></th>
+        <th class="text-center">{% trans "Price" %}</th>
+        <th class="text-center">{% trans "Quantity" %}</th>
+        <th class="text-center">{% trans "Total" %}</th>
+        <th class="text-right"></th>
+    </tr>
+</thead>
+<tbody class="shopp">
+   
+    {% for rs in cart %}
+    {% with product=rs.product %}
+    <tr id="ppppp" data-index="{{product.id}}" class="product-item">
+        <td class="thumb">
+            <a href="/product/{{ rs.product_id }}/{{ rs.product.slug }}">
+                {% if rs.variant.image_id > 0 %}
+                <img src="{{rs.variant.image }}" alt="" style="height: 50px;margin: 0px auto;" class="img-responsive">
+                {% else %}
+                <img src="{{rs.product.image.url}}" alt="" style="height: 50px;margin: 0px auto;" class="img-responsive">
+                {% endif %}
+            </a>
+        </td>
+        <td class="details">
+            <a href="/{{LAN}}/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{product.title}}
+                {{ rs.variant.size|default_if_none:""  }} {{ rs.variant.color }}</a>
+        </td>
+        <td class="price text-center"><strong>
+                {% if rs.product.variant == 'None' %}
+                {{ rs.product.price|currency:request.session.currency }}
+                {{ request.session.currency }}
+                {% else %}
+                {{ rs.variant.price |currency:request.session.currency }}
+                {{ request.session.currency }}
+                {% endif %}
+            </strong></td>
+        <td class="qty text-center dddd">
+  
+                <div class="product__details__quantity">
+                <div class="quantity">
+                    <div class="pro-qtys">
+                        <input id="select{{product.id}}" name="quantity" type="text" value="{{rs.quantity}}">
+                    </div>
+                </div></div>
+            
+
+                
+                 <button type="button" id="update-button" data-index="{{product.id}}"  class="primary-btn icon-btn update-button" ><i
+                class="fa fa-refresh" ></i></button></td>
+        <td class="total text-center"><strong id="priceofporoduct{{product.id}}" class="primary-color">
+                {% if rs.product.variant == 'None' %}
+                {{rs.total_price|currency:request.session.currency }}
+                {{ request.session.currency }}
+                {% else %}
+                {{ rs.total_price|currency:request.session.currency }}
+                {{ request.session.currency }}
+                {% endif %}
+            </strong></td>
+        <td class="text-right">
+
+
+            <button class="primary-btn icon-btn delete-button" data-index="{{product.id}}" ><i
+                    class="fa fa-trash"></i></button>
+
+        </td>
+    </tr>
+    
+    {% endwith %}
+    {% endfor %}
+    <tr  class="product-item"><form action="{% url 'apply' %}" style="display: inline;" method="post"><td class="thumb"  colspan="3">
+        {{ coupon_apply_form|crispy }}
+       
+       </td> <td class="text-center" colspan="3">  <input type="submit" style="display: inline;"  class="primary-btn" value="Apply Coupon">
+        {% csrf_token %}</td> </form></tr>
+</tbody>
+<tfoot>
+    {% if cart.coupon %}
+    <tr>
+        <th class="empty" colspan="3"></th>
+        <th>{% trans "TOTAL" %}</th>
+        <th colspan="2" id="subtotal2" class="sub-total">{{ cart.get_total_price|floatformat:1|currency:request.session.currency }}
+            {{ request.session.currency }}</th>
+    </tr>
+    <tr>
+        <th class="empty" colspan="3"></th>
+        <th> "{{ cart.coupon.code }}" coupon
+            ({{ cart.coupon.discount }}% discount)</th>
+        <th colspan="2" id="subtotal1" class="sub-total">{{ cart.get_discount|floatformat:1|currency:request.session.currency }}
+            {{ request.session.currency }}
+        </th>
+    </tr>
+    
+    {% endif %}
+
+    <tr>
+        <th class="empty" colspan="3"></th>
+        <th>{% trans "TOTAL" %}</th>
+        <th colspan="2" id="subtotal" class="sub-total">{{ cart.get_total_price_after_discount|floatformat:1|currency:request.session.currency }}
+            {{ request.session.currency }}</th>
+    </tr>
+   
+</tfoot>
+
+<script>
+
+  // Update Item
+  $(document).on('click', '.update-button', function (e) {
+    e.preventDefault();
+    var prodid = $(this).data('index');
+    $.ajax({
+      type: 'POST',
+      url: '{% url "basket_update" %}',
+      data: {
+        productid: $(this).data('index'),
+        productqty: $('#select' + prodid).val(),
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'post'
+      },
+      success: function (json) {
+        //document.getElementById("basket-qty").innerHTML = json.qty
+        //document.getElementById("subtotal").innerHTML = json.subtotal;
+        //document.getElementById('priceofporoduct' + prodid).innerHTML = json.subtotalOfProduct;
+        $('#subtotal').html(json.tot);
+        $('#subtotal1').html(json.tot1);
+        $('#subtotal2').html(json.tot2);
+        $('.header-cart  .totalspan').html(json.tot)
+        $('#priceofporoduct' + prodid).html(json.total_price);
+        $('.header-cart a .qty').text(json.qty);
+        console.log('gggggggggggggggggggggggooooooooooooo')
+      },
+      error: function (xhr, errmsg, err) {}
+    });
+  })
+
+// delete item 
+    $(document).on('click', '.delete-button', function (e) {
+        e.preventDefault();
+        var prodid = $(this).data('index');
+        $.ajax({
+          type: 'POST',
+          url: '{% url "basket_delete" %}',
+          data: {
+            productid: $(this).data('index'),
+            csrfmiddlewaretoken: "{{csrf_token}}",
+            action: 'post'
+          },
+          success: function (json) {
+            $('.product-item[data-index="' + prodid + '"]').remove();
+            $('.header-cart  .totalspan').html(json.tot)
+            $('#subtotal').html(json.tot);
+            $('#subtotal1').html(json.tot1);
+            $('#subtotal2').html(json.tot2);
+            $('.header-cart a .qty').text(json.qty);
+    
+          },
+          error: function (xhr, errmsg, err) {}
+        });
+      })
+var proQty = $('.pro-qtys');
+proQty.prepend('<span class="dec qtybtn"><i class="fa fa-minus" aria-hidden="true"></i></span>');
+proQty.append('<span class="inc qtybtn"><i class="fa fa-plus" aria-hidden="true"></i></span>');
+proQty.on('click', '.qtybtn', function () {
+    var $button = $(this);
+    var oldValue = $button.parent().find('input').val();
+    if ($button.hasClass('inc')) {
+        var newVal = parseFloat(oldValue) + 1;
+    } else {
+        // Don't allow decrementing below zero
+        if (oldValue > 1) {
+            var newVal = parseFloat(oldValue) - 1;
+        } else {
+            newVal = 1;
+        }
+    }
+    $button.parent().find('input').val(newVal);
+});
+</script>

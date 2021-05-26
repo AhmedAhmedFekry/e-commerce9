@@ -1,0 +1,127 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% load currency %}
+{% block title %} Compare Products {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+
+
+{% block content %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/">{% trans "Home" %} </a></li>
+            <li class="active">{% trans "Compare" %} </li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="order-summary clearfix">
+                    <div class="section-title">
+                        <h3 class="title">{% trans "Compare Products List" %} </h3>
+                    </div>
+                    <table class="shopping-cart-table table">
+                        <thead>
+                            <tr>
+
+                                <th class="text-left">{% trans "Product image" %} </th>
+                                <th class="text-left">{% trans "Name" %} </th>
+                                <th class="text-center">{% trans "Price" %} </th>
+                                <th class="text-center">{% trans "Rate" %} </th>
+                                <th class="text-center">{% trans "Likes" %} </th>
+                                <th class="text-center">{% trans "Availability" %} </th>
+                                <th class="text-right"> {% trans "Action" %} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for rs in products_compare %}
+                            <tr>
+                                <td class="thumb"><a href="{% url 'product_detail' rs.id rs.slug %}">
+                                        <img src="{{ rs.image.url }}" alt="" style="height: 100px;margin: 0px auto;"
+                                            class="img-responsive">
+                                    </a></td>
+                                <td class="details"> <a
+                                        href="{% url 'product_detail' rs.id rs.slug %}">{{ rs.title }}</a>
+                                </td>
+                                <td class="price text-center">
+                                    <strong>{{ rs.price|currency:request.session.currency }}
+                                        {{ request.session.currency }}</strong><br><del
+                                        class="font-weak"><small>$40.00</small></del></td>
+
+                                <td class="qty text-center">
+                                    <div class="product-rating">
+                                        <i style="color:#ffb656;"
+                                            class="fa fa-star{% if rs.avarege_review < 1%}-o empty{% endif%}"></i>
+                                        <i style="color:#ffb656;"
+                                            class="fa fa-star{% if rs.avarege_review < 2%}-o empty{% endif%}"></i>
+                                        <i style="color:#ffb656;"
+                                            class="fa fa-star{% if rs.avarege_review < 3%}-o empty{% endif%}"></i>
+                                        <i style="color:#ffb656;"
+                                            class="fa fa-star{% if rs.avarege_review < 4%}-o empty{% endif%}"></i>
+                                        <i style="color:#ffb656;"
+                                            class="fa fa-star{% if rs.avarege_review < 5%}-o empty{% endif%}"></i>
+                                        {{ rs.avarege_review}}/{{ rs.count_review}}
+                                    </div>
+                                </td>
+                                <td class="total text-center">{{rs.num_likes}}</td>
+                                <td class="total text-center">{{rs.Availability}}</td>
+                                <td class="text-right">
+                                    <div class="product-btns">
+                                        <form action="{% url 'addlike' %}" method="POST" style="display: inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="product_id" value="{{rs.id}}">
+                                            {%if user not in rs.like.all%}
+                                            <button class="main-btn icon-btn" type="submit"><i
+                                                    class="fa fa-heart-o"></i></button>
+                                            {%else%}
+                                            <button class="main-btn icon-btn" type="submit"><i class="fa fa-heart"
+                                                    style="color:red;"></i></button>
+                                            {%endif%}
+
+                                        </form>
+                                        <a href="{% url 'addcompare' %}" class="main-btn icon-btn"><i
+                                                class="fa fa-times"></i></a>
+                                        {% if rs.variant == 'None'%}
+                                        <a href="{% url 'addtoshopcart' rs.id %}" class="main-btn icon-btn "><i
+                                                class="fa fa-shopping-cart"></i> </a>
+                                        {% else %}
+                                        <a href="{% url 'product_detail' rs.id rs.slug %}"
+                                            class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i>
+                                            {% trans "Detail" %} </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+{% endblock %}

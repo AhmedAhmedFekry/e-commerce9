@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% load i18n %}
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container" style="padding:6px; margin: 0px 6px;">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"> {% trans "Home" %} </a></li>
+            <li class="active"> {% trans "My Comments" %}  </li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+
+
+<!-- section -->
+<div class="section userprofile">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+
+            <div class="col-md-2">
+                {% include "includes/user_panel.html" %}
+            </div>
+
+         
+            <div class="col-md-10">
+                <div class="section-title">
+                    <h4 class="title"> {% trans "User Order List" %} </h4>
+                </div>
+                <table class="shopping-cart-table table">
+                    <tr>
+                        <th class="text-left"> {% trans "Product" %}  </th>
+                        <th class="text-left"> {% trans "Rate" %}  </th>
+                        <th class="text-left"> {% trans "Subject" %}  </th>
+                        <th class="text-left"> {% trans "Comment" %}  </th>
+                        <th class="text-left"> {% trans "Status" %}  </th>
+                        <th class="text-left"> {% trans "Date" %}  </th>
+                        <th class="text-left"> {% trans "Detail" %}  </th>
+                    </tr>
+                    {% for comment in comments %}
+                    <tr>
+                        <td class="text-left">
+                            <a href="/product/{{ comment.product_id }}/{{ comment.product.slug }}">
+                                <strong> {{ comment.product.title}}</strong>
+                            </a>
+                        </td>
+                        <td class="text-left">{{ comment.rate}} </td>
+                        <td class="text-left">{{ comment.subject}} </td>
+                        <td class="text-left">{{ comment.comment|truncatechars:50}} </td>
+                        <td class="text-left">{{ comment.status}} </td>
+                        <td class="text-left">{{ comment.create_at}} </td>
+                        <td class="text-left">
+                            <a class="primary-btn" href="/user/deletecomment/{{ comment.id }}"
+                                onclick="return confirm('Will be Delete ! Are you sure?')">  {% trans "Delete" %}  </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+
+{% endblock content %}

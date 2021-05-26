@@ -1,0 +1,31 @@
+{% load static %}
+{% load i18n %}
+<!-- slider_start -->
+
+<div class="container" id="home">
+  <!-- home wrap -->
+  <div class="home-wrap" style="max-width: 800px; margin-left:270px;">
+    <!-- home slick -->
+    <div id="home-slick">
+      <!-- banner -->
+      {% for offer in offers  %}
+      <div class="banner banner-1">
+        <img src="{{offer.image.url}}" class="img-responsive" alt="">
+        <div class="banner-caption text-center">
+          <h1>{{offer.name }}</h1>
+          <h3 class="white-color font-weak">{{offer.description|safe}}</h3>
+          <a class="primary-btn" href="{{offer.link}}"> {% trans "Shop Now" %}</a>
+        </div>
+      </div>
+      {% endfor %}
+     
+      <!-- /banner -->
+
+     
+    </div>
+    <!-- /home slick -->
+  </div>
+  <!-- /home wrap -->
+</div>
+
+  <!-- slider_end -->

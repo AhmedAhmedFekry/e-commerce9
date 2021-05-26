@@ -1,0 +1,48 @@
+
+{% load i18n %}
+{% load currency %}
+{% get_current_language as LANf %}
+    {% for rs in shopcart %}
+    <div class="product product-widget">
+        <div class="product-thumb">
+            {% if rs.variant.image_id > 0 %}
+            <img src="{{rs.variant.image }}" alt="">
+            {% else %}
+            <img src="{{rs.product.image.url}}" alt="">
+            {% endif %}
+        </div>
+        <div class="product-body">
+            <h3 class="product-price" > {% if rs.product.variant == 'None' %}
+            {{ rs.Total_Price|currency:request.session.currency }} {{ request.session.currency }}
+            {% else %}
+            {{ rs.Total_Pr|currency:request.session.currency }}
+            {{ request.session.currency }}
+            {% endif %} <span class="qty">x{{rs.quantity}}</span></h3>
+            <h2 class="product-name"> <a href="/{{LANf}}/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{rs.product}}
+                {{ rs.variant.size }} {{ rs.variant.color }}</a></h2>
+        </div>
+       
+        <button class="cancel-btn" cancel-id="{{rs.product.id}}"><i
+            class="fa fa-trash"></i></button>
+    </div>
+  
+    {% endfor %}
+    <script>
+        $('.shopping-cart-list .product .cancel-btn').click(function(){
+            console.log('cancel-btn');
+            var productiddelete = $(this).attr('cancel-id');
+            console.log(productiddelete)
+            $.ajax({
+    
+                url:'/home/deleteshoplist/',
+                data:{'productiddelete':productiddelete},
+                dataType: 'json',
+                success:function (data) {
+                    console.log('success from cancel page');
+                    console.log(data.count);
+                    $('.header-cart a .qty').text(data.count);
+        
+                  }
+            })
+          })
+    </script>

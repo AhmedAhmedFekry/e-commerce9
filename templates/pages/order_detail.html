@@ -1,0 +1,141 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load currency %}
+{% load i18n %}
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container" style="padding:6px; margin: 0px 6px;">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"> {% trans "Home" %} </a></li>
+            <li class="active"> {% trans "User Profile" %} </li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+
+
+
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-3">
+                {% include "includes/user_panel.html" %}
+            </div>
+
+            <div class="col-md-9">
+                <div class="order-summary clearfix">
+                    <div class="section-title">
+                        <h3 class="title"> {% trans "Order Detail" %} </h3>
+                    </div>
+                    <table class="shopping-cart-table table">
+                        <tr>
+                            <th class="text-left"> {% trans "Name Surname" %} </th>
+                            <td class="text-left">{{ order.first_name}} {{ order.last_name }} </td>
+                        </tr>
+                        <tr>
+                            <th class="text-left"> {% trans "Phone" %} </th>
+                            <td class="text-left">{{ order.phone}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-left"> {% trans "Addres" %} </th>
+                            <td class="text-left">{{ order.address}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-left"> {% trans "City" %} </th>
+                            <td class="text-left">{{ order.city}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-left"> {% trans "Country" %} </th>
+                            <td class="text-left">{{ order.country}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-left"> {% trans "Status" %} </th>
+                            <td class="text-left">{{ order.status}}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-left"> {% trans "Date" %} </th>
+                            <td class="text-left">{{ order.create_at}}</td>
+                        </tr>
+
+                        <th class="text-left"> {% trans "Shipping Inf" %} </th>
+                        <td class="text-left">{{ order.adminnote}}</td>
+                        </tr>
+
+                    </table>
+
+                 
+                </div>
+            </div> 
+               <div class="col-md-12">
+                <div class="section-title">
+                    <h4 class="title"> {% trans "Order Item List" %} </h4>
+                </div>
+
+                <table class="shopping-cart-table table">
+                    <tr>
+                        <th class="text-left"> {% trans "Image" %}  </th>
+                        <th class="text-left"> {% trans "Product Name" %}  </th>
+                        <th class="text-left"> {% trans "Price" %}  </th>
+                        <th class="text-left"> {% trans "Qauatity" %}  </th>
+                        <th class="text-left"> {% trans "Amount" %}  </th>
+                        <th class="text-left"> {% trans "Status" %}  </th>
+                        <th class="text-left"> {% trans "Date" %}  </th>
+                    </tr>
+                    {% for rs in orderitems %}
+
+                    <tr>
+                        <td class="text-left">
+                            <a href="/product/{{ rs.product_id }}/{{ rs.product.slug }}">
+                                {% if rs.variant.image_id > 0 %}
+                                <img src="{{rs.variant.image }}" alt="" style="height: 50px;margin: 0px auto;" class="img-responsive">
+                                {% else %}
+                                <img src="{{rs.product.image.url}}" alt="" style="height: 50px;margin: 0px auto;" class="img-responsive">
+                                {% endif %}
+                            </a>
+                        </td>
+                        <td class="text-left"> <a href="/product/{{ rs.product_id }}/{{ rs.product.slug }}">{{ rs.product.title}} {{ rs.variant.size }} {{ rs.variant.color }}</a>
+                        </td>
+                        
+
+                        <td class="text-left">
+                        {% if rs.product.variant == 'None' %}
+                            {{ rs.product.price|currency:request.session.currency }}
+                            {{ request.session.currency }}
+                        {% else %}
+                            {{ rs.variant.price|currency:request.session.currency }}
+                            {{ request.session.currency }} 
+                        {% endif %} 
+                        </td>
+                        <td class="text-left">{{ rs.quantity}} </td>
+                        <td class="text-left">
+                        {% if rs.product.variant == 'None' %}
+                            {{ rs.Total_Price|currency:request.session.currency }}
+                            {{ request.session.currency }}
+                        {% else %}
+                            {{ rs.Total_Pr|currency:request.session.currency }}
+                            {{ request.session.currency }}
+                        {% endif %} </td>
+                        <td class="text-left">{{ rs.status}} </td>
+                        <td class="text-left">{{ rs.create_at}} </td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+
+               </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+
+{% endblock content %}

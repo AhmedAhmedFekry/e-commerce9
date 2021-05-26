@@ -1,0 +1,100 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+{{setting.title}}
+{% endblock title %}
+{% block keywords %}
+{{setting.keywords}}
+{% endblock keywords %}
+{% block description %}
+{{setting.description}}
+{% endblock description %}
+
+{% load socialaccount %}
+{% providers_media_js %}
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container" style="padding:6px; margin: 0px 6px;">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"> {% trans "Home" %} </a></li>
+            <li class="active"> {% trans "log in" %} </li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+          
+            <div class="col-md-5">
+                <div class="billing-details">
+
+                    <div class="section-title">
+                        <h3 class="title"> {% trans "Login Form" %} </h3>
+                    </div>
+
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input class="input" type="text" name="username" placeholder='{% trans "user Name" %}'>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="password" name="password" placeholder='{% trans "Password" %}'>
+                        </div>
+                        <div class="billing-details">
+                            <input class="main-btn" type="submit" value='{% trans "Login" %}'></div>
+                    </form>
+
+                </div>
+                </div>
+             <div class="col-md-6">
+                <div class="billing-details">
+
+                    <div class="section-title">
+                        <h3 class="title">LOG IN WITH SOCIAL </h3>
+                    </div>
+                         <div class="social">
+
+                            <ul>
+
+                                {% providers_media_js %}
+                                <li class="facebook">
+                                    <a href="{% provider_login_url 'facebook' method='js_sdk' %}">Sign in with Facebook</a>
+                                   
+                                  </li>
+                                  <li class="google">
+                                    <a href="{% provider_login_url 'google' %}">Sign in with Google</a>
+                                   
+                                  </li>
+                            </ul>
+        
+                         </div>
+                    
+
+                </div>
+                </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+{% endblock content %}

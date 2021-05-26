@@ -1,0 +1,53 @@
+<div class="pagination">
+    <span class="step-links">
+        {% if products.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ products.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ products.number }} of {{ products.paginator.num_pages }}.
+        </span>
+
+        {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}">next</a>
+            <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+<!-- store bottom filter -->
+<div class="store-filter clearfix">
+                       <div class="pull-right">
+        <div class="page-filter">
+            <span class="text-uppercase">Show:</span>
+            <select class="input">
+                <option value="0">10</option>
+                <option value="1">20</option>
+                <option value="2">30</option>
+            </select>
+        </div>
+        
+        {% if products.has_other_pages %}   
+
+        <ul class="store-pages">
+            <li><span class="text-uppercase">Page:</span></li>
+            {% if products.has_previous %}
+            <li> <a href="?page=1"><i class="fa fa-step-backward" aria-hidden="true"></i>
+            </a></li>
+            <li><a href="?page={{ products.previous_page_number }}"><i class="fa fa-caret-left"></i></a></li>
+        {% endif %}
+        
+        {% for i in products.paginator.page_range %}
+                                <li ><a href="?page={{i}}"><span {% if i == number %}style="color: #F8694A; font-weight: bold ;"  {% endif %}>{{i}}</span></a></li>
+                            {% endfor %}
+            {% if products.has_next %}
+        <li><a href="?page={{ products.next_page_number }}"><i class="fa fa-caret-right"></i></a></li>
+           <li> <a href="?page={{ products.paginator.num_pages }}"><i class="fa fa-step-forward" aria-hidden="true"></i>
+            </a></li>
+        {% endif %}
+        
+        </ul>
+        {% endif %}
+    </div>
+</div>
+<!-- /store bottom filter -->  
