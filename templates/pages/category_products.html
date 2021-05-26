@@ -51,7 +51,7 @@
                 success: function (data) {
                     console.log("success");
                     $('#appendproduct').html(data.rendered_table);
-                    $('#pagination').html(data.rendered_pagination);
+                    $('#pagination').html('');
                 },
                 error: function (data) {
                    console.log('you should select max and min true')
