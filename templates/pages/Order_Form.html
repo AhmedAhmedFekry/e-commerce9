@@ -59,30 +59,35 @@
     <div id="paypal-button-container"></div>
 
     <!-- Include the PayPal JavaScript SDK -->
-    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AVUKKHA580fOF4u8fKxVK219ZGeJFN_0nDhA5SV8WdvJEHF8luzpWix-rB5xBjev5LTKy1Yh1BOfGzxz&currency=USD"></script>
 
     <script>
         // Render the PayPal button into #paypal-button-container
         paypal.Buttons({
 
-            style:{color:'blue',
-        shape:'rect'},
+          
             // Set up the transaction
             createOrder: function(data, actions) {
+                console.log('create orded for payment is done')
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: '88.44'
+                            value: '808.44',
+                            currency: 'USD',
                         }
+                        
                     }]
                 });
             },
 
             // Finalize the transaction
             onApprove: function(data, actions) {
+
+                console.log('create orded for payment is onApprove')
                 return actions.order.capture().then(function(details) {
+                    console.log(details);
                     // Show a success message to the buyer
-                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                    alert('Transaction completed by  !');
                 });
             }
 
