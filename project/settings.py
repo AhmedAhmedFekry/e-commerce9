@@ -27,7 +27,7 @@ SECRET_KEY = "*!!oclva_3$&q$h9%)k6!i^j*!3bvhy0dt3)g7&n%se#mlb4kh"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["nileware.org", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["e-commerce9.herokuapp.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
