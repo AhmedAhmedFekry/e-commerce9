@@ -50,7 +50,6 @@ jsonfield==2.1.1
 kombu==4.6.11
 Markdown==3.3.4
 MarkupPy==1.14
-modeltranslation==0.25
 oauthlib==3.1.0
 odfpy==1.4.1
 openpyxl==3.0.6
