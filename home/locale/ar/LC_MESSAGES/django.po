@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-24 23:06+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2021-05-30 15:19+0200\n"
+"PO-Revision-Date: 2021-05-30 13:39+0000\n"
+"Last-Translator: b'  <ahmedahmedfekry11305654@gmail.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -18,44 +18,45 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Translated-Using: django-rosetta 0.9.5\n"
 
 #: .\home\models.py:46 .\home\models.py:66 .\home\models.py:68
 #: .\home\models.py:74
 msgid "name"
-msgstr ""
+msgstr "الأسم "
 
 #: .\home\models.py:48 .\home\models.py:66 .\home\models.py:70
 msgid "email"
-msgstr ""
+msgstr "البريد الإلكتروني"
 
 #: .\home\models.py:50 .\home\models.py:66 .\home\models.py:69
 msgid "subject"
-msgstr ""
+msgstr "عنوان الرسالة "
 
 #: .\home\models.py:52 .\home\models.py:66 .\home\models.py:71
 msgid "message"
-msgstr ""
+msgstr "الرسالة"
 
 #: .\home\models.py:68
 msgid "Name & Surname"
-msgstr ""
+msgstr "الاسم "
 
 #: .\home\models.py:69
 msgid "Subject"
-msgstr ""
+msgstr "الموضوع"
 
 #: .\home\models.py:70
 msgid "Email Address"
-msgstr ""
+msgstr "البريد الإلكتروني"
 
 #: .\home\models.py:71
 msgid "Your Message"
-msgstr ""
+msgstr "رسالتك"
 
 #: .\home\models.py:75
 msgid "link"
-msgstr ""
+msgstr "الرابط"
 
 #: .\home\models.py:76
 msgid "image"
-msgstr ""
+msgstr "الصورة"

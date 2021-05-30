@@ -37,7 +37,7 @@
 				{% if user.is_authenticated %}
 				<div class="col-md-3 col-sm-6 col-xs-6">
 					<div class="footer">
-						<h3 class="footer-header">My Account</h3>
+						<h3 class="footer-header">{% trans "My Account" %}</h3>
 						<ul class="list-links">
 							<li><a href="{% url 'user_index' %}"><i class="fa fa-user-o"></i> {% trans "My Account" %}</a></li>
 							<li><a href="{% url 'my_orders' %}"><i class="fa fa-tasks"></i>

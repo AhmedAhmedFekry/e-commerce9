@@ -79,7 +79,7 @@
     <tr  class="product-item"><form action="{% url 'apply' %}" style="display: inline;" method="post"><td class="thumb"  colspan="3">
         {{ coupon_apply_form|crispy }}
        
-       </td> <td class="text-center" colspan="3">  <input type="submit" style="display: inline;"  class="primary-btn" value="Apply Coupon">
+       </td> <td class="text-center" colspan="3">  <input type="submit" style="display: inline;"  class="primary-btn" value='{% trans "Apply Coupon" %}'>
         {% csrf_token %}</td> </form></tr>
 </tbody>
 <tfoot>

@@ -91,7 +91,7 @@
 				  <div class="header-search">
                     <form action="{% url 'search' %}" method="post">
                         {% csrf_token %}
-                        <input id="query" name="query" class="input search-input" type="text" placeholder="Enter your keyword">
+                        <input id="query" name="query" class="input search-input" type="text" placeholder='{% trans "Enter your keyword" %}'>
                         <select name="catid"  class="input search-categories">
                             <option value="0">{% trans "All Categories" %}</option>
 
