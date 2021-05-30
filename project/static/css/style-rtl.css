@@ -236,6 +236,48 @@ th.firstth {
   text-align: right;
 }
 
+@media only screen and (max-width: 991px) {
+  #home .home-wrap {
+    margin-left: auto!important;
+    margin-right: auto!important;
+  }
+  #aside {
+    margin-bottom: 60px;
+  }
+  .product-reviews {
+    margin-bottom: 30px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  #home .home-wrap {
+    margin-left: auto!important;
+    margin-right: auto!important;
+  }
+  .banner h1 {
+    font-size: 36px;
+  }
+  .store-filter .pull-right,
+  .store-filter .pull-left {
+    float: none !important;
+  }
+  .store-filter .pull-right {
+    margin-top: 15px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  #home .home-wrap {
+    margin-left: auto!important;
+    margin-right: auto!important;
+  }
+
+
+  [class*="col-xs"] {
+    width: 100%;
+  }
+}
+
 /* end user template*/
 /* .ui-slider-horizontal.ui-slider-rtl .ui-slider-range-min {
   left: auto !important;
