@@ -32,6 +32,7 @@ def login_form(request):
             current_user = request.user
             userprofile = UserProfile.objects.get(user_id=current_user.id)
             request.session['userimage'] = userprofile.image.url
+            
             # *** Multi Langugae
             # request.session[translation.LANGUAGE_SESSION_KEY] = userprofile.language.code
             # request.session['currency'] = userprofile.currency.code
@@ -97,6 +98,11 @@ def user_update(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            current_user = request.user
+            userprofile = UserProfile.objects.get(user_id=current_user.id)
+            request.session['userimage'] = userprofile.image.url
+            request.session.modified = True
+
             messages.success(request, 'Your account has been updated!')
             return HttpResponseRedirect('/user')
     else:

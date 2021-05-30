@@ -206,12 +206,13 @@ def order_create(request):
     print('lllllllllllllllllllllllllllllllllllllll')
     category = Category.objects.all()
     cart = Cart(request)
-
+    user=request.user
     print('the cart is ', cart )
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
             order = form.save(commit=False)
+            order.user=user
             if cart.coupon:
                 order.coupon = cart.coupon
                 order.discount = cart.coupon.discount

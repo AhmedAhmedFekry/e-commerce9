@@ -1,4 +1,4 @@
 {% load static %}
 {% load i18n %}
-<button class="main-btn"> {% trans "View Cart" %}</button>
-<button class="primary-btn"> {% trans "Checkout" %} <i class="fa fa-arrow-circle-right"></i></button>
+<button class="main-btn"> <a href="{% url 'shopcart' %}" style="color: #3498db;">{% trans "View Cart" %}</a> </button>
+<button class="primary-btn"> <a href="{% url 'order_create' %}" style="color: #fff;">{% trans "Checkout" %} </a>  <i class="fa fa-arrow-circle-right"></i></button>

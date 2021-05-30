@@ -37,11 +37,11 @@ class UserUpdateForm(UserChangeForm):
         }
 
 
-CITY = [
-    ('Istanbul', 'Istanbul'),
-    ('Ankara', 'Ankara'),
-    ('Izmir', 'Izmir'),
-]
+# CITY = [
+#     ('Istanbul', 'Istanbul'),
+#     ('Ankara', 'Ankara'),
+#     ('Izmir', 'Izmir'),
+# ]
 
 
 class ProfileUpdateForm(forms.ModelForm):
@@ -51,7 +51,8 @@ class ProfileUpdateForm(forms.ModelForm):
         widgets = {
             'phone': TextInput(attrs={'class': 'input', 'placeholder': _('phone')}),
             'address': TextInput(attrs={'class': 'input', 'placeholder': _('address')}),
-            'city': Select(attrs={'class': 'input', 'placeholder': _('city')}, choices=CITY),
+            # 'city': Select(attrs={'class': 'input', 'placeholder': _('city')}, choices=CITY),
+            'city': TextInput(attrs={'class': 'input', 'placeholder': _('city')}),
             'country': TextInput(attrs={'class': 'input', 'placeholder': _('country')}),
             'image': FileInput(attrs={'class': 'input', 'placeholder': _('image'), }),
         }
