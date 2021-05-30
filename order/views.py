@@ -65,8 +65,8 @@ def order_created(request):
     print('the request ', data['form'] )
     print('the cart is ', cart )
     f=data['form']
-    
-    order=Order.objects.create(first_name=f['first_name'],last_name=f['last_name'],address=['address'],phone=['phone'],city=f['city'],country=f['country'])
+    user=request.user
+    order=Order.objects.create(user=user,first_name=f['first_name'],last_name=f['last_name'],address=f['address'],phone=f['phone'],city=f['city'],country=f['country'])
     order.save()
     print('order is created done 2 ')
     for item in cart:

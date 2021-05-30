@@ -48,7 +48,7 @@ class Order(models.Model):
         ("Completed", "Completed"),
         ("Canceled", "Canceled"),
     )
-    # user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     # code = models.CharField(max_length=5, editable=False)
     first_name = models.CharField(max_length=10)
     last_name = models.CharField(max_length=10)
