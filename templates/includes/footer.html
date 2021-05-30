@@ -61,11 +61,11 @@
 				<!-- footer widget -->
 				<div class="col-md-3 col-sm-6 col-xs-6">
 					<div class="footer">
-						<h3 class="footer-header">Customer Service</h3>
+						<h3 class="footer-header">{% trans "Customer Service" %}</h3>
 						<ul class="list-links">
-							<li><a href="#">About Us</a></li>
-							<li><a href="#">Shiping & Return</a></li>
-							<li><a href="#">Shiping Guide</a></li>
+						<li><a href="{% url 'home' %}"> {% trans "Home" %}</a></li>
+						<li><a href="{% url 'aboutus' %}"> {% trans "About Us" %}</a></li>
+						<li><a href="{% url 'cantactus' %}"> {% trans "Cantact Us" %}</a></li>>
 							<li><a href="#">FAQ</a></li>
 						</ul>
 					</div>

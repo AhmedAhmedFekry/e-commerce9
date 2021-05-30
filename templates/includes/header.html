@@ -11,9 +11,7 @@
 				</div>
 				<div class="pull-right">
 					<ul class="header-top-links">
-						<li><a href="#">{% trans "Store" %}</a></li>
-						<li><a href="#">{% trans "Newsletter" %}</a></li>
-						<li><a href="{% url 'faq' %}">{% trans "FAQ" %}</a></li>
+						
 						<li class="dropdown default-dropdown">
 							<form action="{% url 'set_language' %}" method="post">
 								{% csrf_token %}
