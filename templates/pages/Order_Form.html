@@ -22,7 +22,7 @@
     <div class="container">
         <!-- row -->
         <div class="row">
-            <Form action="" method="post">
+            <Form action="" method="post" id="form">
                 {% csrf_token %}
                 <div class="col-md-6">
                     <div class="billing-details">
@@ -40,19 +40,13 @@
                         <div class="section-title">
                             <h4 class="title">{% trans "Payment Information" %}</h4>
                         </div>
-                        <p><label for="id_first_name">{% trans "Total:" %} {{ total }} USD </label>
+                        <p><label for="id_first_name">{% trans "Total:" %} {{ total }}  </label>
                             <input type="text" name="total" class="input" readonly
-                                value="${{ cart.get_total_price_after_discount|currency:request.session.currency }} {{ request.session.currency }}">
+                                value="{{ cart.get_total_price_after_discount|currency:request.session.currency }} {{ request.session.currency }}">
                         </p>
                         <p><label for="id_first_name">{% trans "Payment By" %}</label>
-                            <button style="    display: block;
-                            width: 100px;
-                            padding: 7px 9px;
-                            margin: 20px;" type="submit" name="cash" value="cash" class="primary-btn">{% trans "Cash" %}</button>
-                            <button style="    display: block;
-                            width: 100px;
-                            padding: 7px 9px;
-                            margin: 20px;" type="submit"  name="paypal" value="paypal"class="primary-btn">{% trans "paypal" %} </button>
+                            <button style="display: block;width: 100%;padding: 14px 9px;border-radius: 4px;font-size: 20px;" type="submit" name="cash" value="cash" class="primary-btn">{% trans "Cash" %}</button>
+                         
 
                     </div>
                     <!-- Set up a container element for the button -->
@@ -62,6 +56,11 @@
     <script src="https://www.paypal.com/sdk/js?client-id=Ac5a4wPdEsajLwWmzjnNq5pYSzs2x5TWmPVlz4YwDwrFHIn64L4s94cNEbl63LbmJU_OVAd7pbCnJ0v1&currency=USD"></script>
 
     <script>
+        var form = document.getElementById('form')
+        var  tot_price = "{{ cart.get_total_price_after_discount|currency:'USD'}}"
+         var url = "{% url 'order_created' %}";
+        var tp= parseFloat(tot_price).toFixed(2)
+      
         // Render the PayPal button into #paypal-button-container
         paypal.Buttons({
 
@@ -69,10 +68,11 @@
             // Set up the transaction
             createOrder: function(data, actions) {
                 console.log('create orded for payment is done')
+                console.log(tot_price)
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: '808.44',
+                            value: tp,
                             currency: 'USD',
                         }
                         
@@ -87,7 +87,34 @@
                 return actions.order.capture().then(function(details) {
                     console.log(details);
                     // Show a success message to the buyer
-                    alert('Transaction completed by  !');
+
+                    sendData();
+          function sendData() {
+
+               var userFormData = {
+				'first_name':form.first_name.value,
+				'last_name':form.last_name.value,
+				'address':form.address.value,
+                'phone':form.phone.value,
+                'city':form.city.value,
+                'country':form.country.value,
+			}
+            fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+              },body:JSON.stringify({'form':userFormData}),
+             
+            }).then(response => {
+        // HTTP 301 response
+        // HOW CAN I FOLLOW THE HTTP REDIRECT RESPONSE?
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+    });
+          }
+                    
                 });
             }
 

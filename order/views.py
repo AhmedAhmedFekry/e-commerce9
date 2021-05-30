@@ -54,46 +54,72 @@ def shopcart(request):
     return render(request, "pages/shopcart_products.html", context)
 
 
-def order_create(request):
+def order_created(request):
     category = Category.objects.all()
+
     cart = Cart(request)
-    if request.method == "POST":
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            if cart.coupon:
-                order.coupon = cart.coupon
-                order.discount = cart.coupon.discount
-            order.save()
-            for item in cart:
-                OrderProduct.objects.create(
+    for item in cart:
+        print('ff', item["product"])
+    data = json.loads(request.body)
+    print('the request ', data )
+    print('the request ', data['form'] )
+    print('the cart is ', cart )
+    f=data['form']
+    
+    order=Order.objects.create(first_name=f['first_name'],last_name=f['last_name'],address=['address'],phone=['phone'],city=f['city'],country=f['country'])
+    order.save()
+    print('order is created done 2 ')
+    for item in cart:
+            OrderProduct.objects.create(
                     order=order,
                     product=item["product"],
                     variant=None,
                     price=item["price"],
                     quantity=item["quantity"],
                 )
-            # clear the cart
-            cart.clear()
-            # launch asynchronous task
-            # order_created.delay(order.id)
+    print('order is created done 1 ')
+    messages.success(request, "Payment was successful")
+    cart.clear()
+    return redirect('home')
 
-            return render(
-                request,
-                "pages/Order_Completed.html",
-                {"category": category, "order": order},
-            )
-    else:
-        form = OrderForm()
-    return render(
-        request,
-        "pages/Order_Form.html",
-        {
-            "cart": cart,
-            "form": form,
-            "category": category,
-        },
-    )
+
+    # if request.method == "POST":
+    #     form = OrderForm(request.POST)
+    #     if form.is_valid():
+    #         order = form.save(commit=False)
+    #         if cart.coupon:
+    #             order.coupon = cart.coupon
+    #             order.discount = cart.coupon.discount
+    #         order.save()
+    #         for item in cart:
+    #             OrderProduct.objects.create(
+    #                 order=order,
+    #                 product=item["product"],
+    #                 variant=None,
+    #                 price=item["price"],
+    #                 quantity=item["quantity"],
+    #             )
+    #         # clear the cart
+    #         cart.clear()
+    #         # launch asynchronous task
+    #         # order_created.delay(order.id)
+
+    #         return render(
+    #             request,
+    #             "pages/Order_Completed.html",
+    #             {"category": category, "order": order},
+    #         )
+    # else:
+    #     form = OrderForm()
+    # return render(
+    #     request,
+    #     "pages/Order_Form.html",
+    #     {
+    #         "cart": cart,
+    #         "form": form,
+    #         "category": category,
+    #     },
+    # )
 
 
 def orderproductpaypal(request):
@@ -159,3 +185,64 @@ def admin_order_detail(request, order_id):
 #         response, stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + "/css/pdf.css")]
 #     )
 #     return response
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def order_create(request):
+    print('lllllllllllllllllllllllllllllllllllllll')
+    category = Category.objects.all()
+    cart = Cart(request)
+
+    print('the cart is ', cart )
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            if cart.coupon:
+                order.coupon = cart.coupon
+                order.discount = cart.coupon.discount
+            order.save()
+            for item in cart:
+                OrderProduct.objects.create(
+                    order=order,
+                    product=item["product"],
+                    variant=None,
+                    price=item["price"],
+                    quantity=item["quantity"],
+                )
+            # clear the cart
+            cart.clear()
+            # launch asynchronous task
+            # order_created.delay(order.id)
+
+            return render(
+                request,
+                "pages/Order_Completed.html",
+                {"category": category, "order": order},
+            )
+    else:
+        form = OrderForm()
+    return render(
+        request,
+        "pages/Order_Form.html",
+        {
+            "cart": cart,
+            "form": form,
+            "category": category,
+        },
+    )
+

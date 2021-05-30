@@ -33,18 +33,27 @@
 				<!-- /footer widget -->
 
 				<!-- footer widget -->
+				
+				{% if user.is_authenticated %}
 				<div class="col-md-3 col-sm-6 col-xs-6">
 					<div class="footer">
 						<h3 class="footer-header">My Account</h3>
 						<ul class="list-links">
-							<li><a href="#">My Account</a></li>
-							<li><a href="#">My Wishlist</a></li>
-							<li><a href="#">Compare</a></li>
-							<li><a href="#">Checkout</a></li>
-							<li><a href="#">Login</a></li>
+							<li><a href="#"><i class="fa fa-user-o"></i> {% trans "My Account" %}</a></li>
+							<li><a href="{% url 'my_orders' %}"><i class="fa fa-tasks"></i>
+								{% trans "My Orders" %}</a></li>
+							<li><a href="{% url 'like' %}"><i class="fa fa-heart-o"></i>
+									{% trans "My Favorits" %}</a></li>
+							<li><a href="{% url 'compare' %}"><i class="fa fa-exchange"></i>
+									{% trans "My comparison" %}</a></li>
+							<li><a href="{% url 'logout' %}"><i class="fa fa-unlock-alt"></i> {% trans "Log out" %}</a></li>
+							<li><a href="#"><i class="fa fa-user-plus"></i> {% trans "Create An Account" %}</a></li>
 						</ul>
 					</div>
 				</div>
+				{% endif %}
+					
+			
 				<!-- /footer widget -->
 
 				<div class="clearfix visible-sm visible-xs"></div>
