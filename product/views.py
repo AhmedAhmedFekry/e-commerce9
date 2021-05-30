@@ -24,7 +24,7 @@ def product_detail(request, id, slug):
     product = Product.objects.get(pk=id)
     catda = Category.objects.get(pk=product.category_id)
     images = Images.objects.filter(product_id=id)
-    comments = Comment.objects.filter(product_id=id, status="True")
+    comments = Comment.objects.filter(product_id=id)
 
     context = {
         "product": product,

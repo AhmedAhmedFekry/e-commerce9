@@ -159,7 +159,7 @@ class Product(models.Model):
 
     ########################### this function is used to calculate the average of the rating for this product
     def avarege_review(self):
-        reviews = Comment.objects.filter(product=self, status="True").aggregate(
+        reviews = Comment.objects.filter(product=self).aggregate(
             avarage=Avg("rate")
         )
         avg = 0
@@ -169,7 +169,7 @@ class Product(models.Model):
 
     ############## this function is used to count comment for this product
     def count_review(self):
-        reviews = Comment.objects.filter(product=self, status="True").aggregate(
+        reviews = Comment.objects.filter(product=self).aggregate(
             count=Count("id")
         )
         counter = 0

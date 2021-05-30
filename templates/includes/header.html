@@ -120,7 +120,7 @@
 								href="{% url 'signup' %}" class="text-uppercase">{% trans "Sign Up" %}</a>
 							{% endif %}
 							<ul class="custom-menu">
-								<li><a href="#"><i class="fa fa-user-o"></i> {% trans "My Account" %}</a></li>
+								<li><a href="{% url 'user_index' %}"><i class="fa fa-user-o"></i> {% trans "My Account" %}</a></li>
 								<li><a href="{% url 'my_orders' %}"><i class="fa fa-tasks"></i>
 									{% trans "My Orders" %}</a></li>
 								<li><a href="{% url 'like' %}"><i class="fa fa-heart-o"></i>

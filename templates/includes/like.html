@@ -75,8 +75,17 @@
                                         {%endif%}
 
                                     </form>
-                                    <a href="{% url 'addcompare' %}" class="main-btn icon-btn"><i
-                                            class="fa fa-exchange"></i></a>
+                                    <form action="{% url 'addcompare' %}" method="POST" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{rs.id}}">
+                                        {%if user not in rs.compare.all%}
+                                        <button class="main-btn icon-btn" type="submit"><i class="fa fa-exchange"></i></button>
+                                        {%else%}
+                                        <button class=" main-btn icon-btn" type="submit"><i class="fa fa-exchange"
+                                                style="color:green;"></i></button>
+                                        {%endif%}
+        
+                                    </form>
                                             {% if rs.variant == 'None'%}
                                             <input type="hidden" name="prosuctid" value="{{ rs.id }}">
                                             <button type="button" class=" primary-btn " id="add-button"  value="{{rs.id}}" {% if rs.amount < 1  %} disabled {% endif %} >

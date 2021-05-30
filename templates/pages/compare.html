@@ -92,15 +92,29 @@
                                             {%endif%}
 
                                         </form>
-                                        <a href="{% url 'addcompare' %}" class="main-btn icon-btn"><i
-                                                class="fa fa-times"></i></a>
+                                        <form action="{% url 'addcompare' %}" method="POST" style="display: inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="product_id" value="{{rs.id}}">
+                                            {%if user not in rs.compare.all%}
+                                            <button class="main-btn icon-btn" type="submit"><i class="fa fa-exchange"></i></button>
+                                            {%else%}
+                                            <button class=" main-btn icon-btn" type="submit"><i class="fa fa-times"
+                                               ></i></button>
+                                            {%endif%}
+            
+                                        </form>
+
                                         {% if rs.variant == 'None'%}
-                                        <a href="" class="main-btn icon-btn "><i
-                                                class="fa fa-shopping-cart"></i> </a>
+                                        <input type="hidden" name="prosuctid" value="{{ rs.id }}">
+                                        <button type="button" class=" primary-btn " id="add-button"  value="{{rs.id}}" {% if rs.amount < 1  %} disabled {% endif %} >
+                                                {% if rs.amount > 0  %}
+                                               <del></del> <i class="fa fa-shopping-cart"></i> {% trans "Add to Cart" %}{% else %}
+                                                <i class="fa fa-shopping-cart"></i> {% trans "Out of Stock" %} {% endif %}
+                                            </button>
+                                             
                                         {% else %}
-                                        <a href="{% url 'product_detail' rs.id rs.slug %}"
-                                            class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i>
-                                            {% trans "Detail" %} </a>
+                                        <a href="{% url 'rs_detail' rs.id rs.slug %}" class="primary-btn"><i
+                                                class="fa fa-shopping-cart"></i> {% trans "Detail" %}</a>
                                         {% endif %}
                                     </div>
                                 </td>
