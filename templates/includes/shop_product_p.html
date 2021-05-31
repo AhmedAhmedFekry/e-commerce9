@@ -87,14 +87,14 @@
     <tr>
         <th class="empty" colspan="3"></th>
         <th>{% trans "TOTAL" %}</th>
-        <th colspan="2" id="subtotal2" class="sub-total">{{ cart.get_total_price|floatformat:1|currency:request.session.currency }}
+        <th colspan="2" id="subtotal2" class="sub-total">{{ cart.get_total_price|currency:request.session.currency }}
             {{ request.session.currency }}</th>
     </tr>
     <tr>
         <th class="empty" colspan="3"></th>
         <th> "{{ cart.coupon.code }}" coupon
             ({{ cart.coupon.discount }}% discount)</th>
-        <th colspan="2" id="subtotal1" class="sub-total">{{ cart.get_discount|floatformat:1|currency:request.session.currency }}
+        <th colspan="2" id="subtotal1" class="sub-total">{{ cart.get_discount|currency:request.session.currency }}
             {{ request.session.currency }}
         </th>
     </tr>
@@ -104,7 +104,7 @@
     <tr>
         <th class="empty" colspan="3"></th>
         <th>{% trans "TOTAL" %}</th>
-        <th colspan="2" id="subtotal" class="sub-total">{{ cart.get_total_price_after_discount|floatformat:1|currency:request.session.currency }}
+        <th colspan="2" id="subtotal" class="sub-total">{{ cart.get_total_price_after_discount|currency:request.session.currency }}
             {{ request.session.currency }}</th>
     </tr>
    
