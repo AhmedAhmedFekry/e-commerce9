@@ -23,6 +23,7 @@ def home(request):
     current_user = request.user  # Access User Session information
     if not request.session.has_key("currency"):
         request.session["currency"] = settings.DEFAULT_CURRENCY
+        request.session.modified = True
     offers = Offer.objects.all()
     category = Category.objects.all()
     setting = Setting.objects.get(pk=1)
@@ -139,12 +140,14 @@ def selectlanguage(request):
         lasturl = request.META.get("HTTP_REFERER")
         lang = request.POST["language"]
         translation.activate(lang)
+        request.session["currency"] = settings.DEFAULT_CURRENCY
         request.session[translation.LANGUAGE_SESSION_KEY] = lang
         # return HttpResponse(lang)
         return HttpResponseRedirect("/" + lang)
 
 
 def selectcurrency(request):
+    print('in currency method ')
     lasturl = request.META.get("HTTP_REFERER")
     if request.method == "POST":  # check post
         request.session["currency"] = request.POST["currency"]

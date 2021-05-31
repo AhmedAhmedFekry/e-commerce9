@@ -10,6 +10,7 @@ from order.models import Order, OrderProduct
 from product.models import Category, Comment
 from user.forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from user.models import UserProfile
+from project import settings
 
 
 # Create your views here.
@@ -32,7 +33,8 @@ def login_form(request):
             current_user = request.user
             userprofile = UserProfile.objects.get(user_id=current_user.id)
             request.session['userimage'] = userprofile.image.url
-            
+            request.session["currency"] = settings.DEFAULT_CURRENCY
+        # request.session.modified = True
             # *** Multi Langugae
             # request.session[translation.LANGUAGE_SESSION_KEY] = userprofile.language.code
             # request.session['currency'] = userprofile.currency.code
