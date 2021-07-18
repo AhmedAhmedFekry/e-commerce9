@@ -14,7 +14,7 @@ Before running this project you need make virtual envitoment and install require
 For running
 
 python manage.py runserver
-
+• auth system 
 • Create a product catalog
 • multi language
 • multi currency
@@ -34,3 +34,9 @@ python manage.py runserver
 • Creating a coupon system to apply discounts
 • Adding internationalization to your project
 • Using Rosetta to manage translations
+• my favorits products 
+• my comparison product 
+• my orders 
+• update cart by using ajax
+• social media log in
+
