@@ -89,8 +89,7 @@ def ajaxcolor(request):
 @login_required(login_url="/login")
 def addcomment(request, id):
     url = request.META.get("HTTP_REFERER")  # get last url
-    # return HttpResponse(url)
-    # print('add commmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')
+  
     if request.method == "POST":  # check post
         form = CommentForm(request.POST)
         print("add commmmmmmmmmmmmmmmmmmmmmmmm")
