@@ -71,8 +71,8 @@ class OrderAdmin(admin.ModelAdmin):
         "status",
         "create_at",
         "paid",
-        # order_detail,
-        # order_pdf,
+        order_detail,
+        order_pdf,
     ]
     # list_filter = ['status']
     list_per_page = 20
