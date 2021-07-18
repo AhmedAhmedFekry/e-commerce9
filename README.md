@@ -1,3 +1,20 @@
+This project is a multilanguage and multi-currency e-commerce Python Djnago web project.
+
+
+this prpoject depoly on heroku: https://e-commerce9.herokuapp.com/en/
+
+Downloading project:
+Clone as zip file and open it your computer or if you have git application
+https://github.com/AhmedAhmedFekry/e-commerce9.git
+Before running this project you need make virtual envitoment and install requirement.txt
+  python3 -m venv rar 
+    activate rar 
+    pip install -r requirements.txt
+    
+For running
+
+python manage.py runserver
+
 • Create a product catalog
 • multi language
 • multi currency
